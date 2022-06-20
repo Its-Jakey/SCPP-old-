@@ -1,0 +1,81 @@
+## Syntax
+### Defining Variables
+#### There are 2 types of variables, global and local. A variable is global when it is defined outside a function, otherwise it is local.
+Variables can be defined by using the 'var' keyword like
+
+    var x = value
+an empty array like
+
+    var x[20];
+
+or an array with values like
+
+    var x = {a, b, c, d...};
+
+Values of arrays can be accessed with
+
+    var value = array[index];
+
+Constants can also be defined with '#define'
+
+    #define MY_CONSTANT 21
+    var x = MY_CONSTANT;
+
+### Functions
+#### Functions must be declared when in a namespace, and not in a function definition.
+Functions can be defined with
+
+    func funcName(arguments...) {yourCodeHere...}
+Functions arguments a formatted like
+
+    arg1, arg2, arg3
+Functions can be called with
+
+    funcName(args...);
+
+Functions can also return variables with the 'return' keyword
+
+    return value;
+    var x = funcName();
+
+### Namespaces
+#### Namespaces are like seperate packages for functions and global variables
+Namespaces can be defined with the 'namespace' keyword like
+
+    namespace myNamespace {yourCodeHere...}
+
+When you define a function or global variable with the 'public' keyword prefix, you can access it from another namespace like
+
+    otherNamespace::function(args...);
+or
+
+    var x = otherNamespace::globalVariable;
+
+### If and While loops
+#### if and while are both statements that take a condition as input and will either run your code once or repeat your code until the input condition is less than 1
+If statements are used like
+
+    if (condition) {code...}
+
+While statements are used like
+
+    while (condition) {code...}
+
+### For loops
+#### A for loop will loop your code until a variable is not smaller than the target variable, the variable with increment by 1 by default, but can be changed by adding 'by \[increment]'
+For statements can be either used like
+
+    for (i from start to end) {code...}
+Or like
+
+    for (i from start to end by increment)
+
+### #Include
+#### #include takes a filename or a builtin file and adds all the namespaces from that file to your current file
+#include can be used either like
+
+    #include "[filepath]"
+
+or like
+
+    #include <[library name]>

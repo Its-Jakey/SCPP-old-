@@ -1,0 +1,21 @@
+Known bugs (Before ':' is the description, after is how to produce it)
+
+Arrays {
+    Arrays cannot be passed as arguments to functions:                  var array[10]; myFunc(array);
+    Functions cannot return arrays:                                     var array[10]; return array;
+    '+=', '-=', '/=', '-=', '++', '--' does not work for array items:   var array[10]; array[0]++;
+}
+
+Strings {
+    Strings cannot start with ':':                                      var str = ":hi";
+    Strings cannot contain '"':                                         var str = "sup \"world\"";
+    Putting newlines (\n) in strings may break everything:              var str = "line1\nline2";
+    Layered 'strings::join(a, b)' sometimes doesn't work:               var str = strings::join("hello", strings::join(" ", "world"));
+}
+
+Other {
+    '#define' and '#include' cannot be used after defining a namespace: namespace main {} #define MY_CONSTANT 123
+    '#define' only works with integers: #define INTEGER_CONSTANT "Sup"
+}
+
+If you discover any other bugs, please report them at https://github.com/Its-Jakey/SCPP/issues

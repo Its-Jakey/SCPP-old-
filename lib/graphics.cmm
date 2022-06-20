@@ -22,7 +22,7 @@ namespace graphics {
     public func drawString(string) {
         _asm_("drawText", string);
     }
-    public func drawTextLine(line) {
+    public func drawStringLine(line) {
         _asm_("drawText", line);
         _asm_("newLine");
     }
