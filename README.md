@@ -5,3 +5,6 @@
 
 This programming language is filled with bugs and is design to *NOT* be used practically
 Make sure you read the [known bugs](Known%20bugs.txt) *BEFORE* you report a new one
+
+
+P.S. The /tests folder is just filled with random stuff i was playing around with, the only one that works is [this](tests/demo.cmm)
