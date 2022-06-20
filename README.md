@@ -8,11 +8,12 @@ Make sure you read the [known bugs](Known%20bugs.txt) *BEFORE* you report a new 
 
 ## Usage
 Java must be installed in order to run the compiler
-#### compiling
-To compile your file run
+#### Compiling
+1. Download the latest release of the compiler from [here](https://github.com/Its-Jakey/SCPP/releases)
+2. to compile your file run
 
     java -jar [INPUT_FILE] [OUTPUT_FILE.txt]
-#### running
+#### Running
 To run your file, goto [this](https://scratch.mit.edu/projects/697633215/editor/) Scratch project, then right-click the "program" list and hit the "import" button then select your file. You can then click the flag to run the program. 
 
 P.S. The /tests folder is just filled with random stuff I was playing around with, the only one that works is [this](tests/demo.cmm)
