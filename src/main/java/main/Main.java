@@ -71,6 +71,6 @@ public class Main {
 
         //tmp();
         String asm = Compiler.compileTopLevel(new File(args[0]));
-        Files.writeString(Path.of(args[0]), asm);
+        Files.writeString(Path.of(args[1]), asm);
     }
 }
