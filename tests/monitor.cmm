@@ -1,0 +1,86 @@
+#include <input>
+#include <strings>
+#include <graphics>
+#include <math>
+#include <textBuffer>
+
+#define RAM_SIZE 2048
+
+namespace monitor {
+    var ram[RAM_SIZE];
+    var hexChars = {"0","1","2","3","4","5","6","7","8","9","A","B","C","D","E","F"};
+
+    func getHexDigitValue(hexDigit) {
+        if (hexDigit == "a")
+            return 10;
+        if (hexDigit == "b")
+            return 11;
+        if (hexDigit == "c")
+            return 12;
+        if (hexDigit == "d")
+            return 13;
+        if (hexDigit == "e")
+            return 14;
+        if (hexDigit == "f")
+            return 15;
+        return hexDigit;
+    }
+    public func toHex(num) {
+        var rem = 0;
+        var decimal = num;
+        var hex = "";
+
+        while (decimal > 0) {
+            rem = decimal % 16;
+            hex = hexChars[rem] + hex;
+            decimal = math::round(decimal / 16);
+        }
+    }
+    public func fromHex(hex) {
+        var ret = 0;
+
+        for (i from 0 to strings::sizeOf(hex)) {
+            ret += getHexDigitValue(strings::charAt(hex, i));
+            ret *= 16;
+        }
+        return ret / 16;
+    }
+
+    public func lookup(value) {
+        var ret = "";
+
+        for (i from 0 to RAM_SIZE) {
+            if (ram[i] == value)
+                ret = ret + " " + toHex(i);
+        }
+        if (strings::sizeOf(ret) > 0)
+            return strings::substring(ret, 1, strings::sizeOf(ret));
+        return ret;
+    }
+    public func valueAt(addr) {
+        return toHex(ram[addr]);
+    }
+    public func getRange(start, end) {
+        var ret = "";
+
+        for (i from start to end)
+            ret = ret + " " + toHex(ram[i]);
+
+        if (strings::sizeOf(ret) > 0)
+            return strings::substring(ret, 1, strings::sizeOf(ret));
+        return ret;
+    }
+}
+
+namespace main {
+
+    public func main() {
+        textBuffer::clear();
+
+        while (1) {
+            var command = input::ask("Command: ");
+            println(command);
+            graphics::drawString(command);
+        }
+    }
+}

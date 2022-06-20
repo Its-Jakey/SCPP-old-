@@ -1,0 +1,19 @@
+#include <cloud>
+#include <input>
+#include <graphics>
+
+#define VAR_TO_TEST 0
+
+
+namespace cloudTest {
+    public func main() {
+        var input = input::ask("Input?");
+
+        graphics::drawTextLine(strings::join("Input:  ", input));
+        cloud::setVar(VAR_TO_TEST, cloud::encode(input));
+
+        var output = cloud::decode(cloud::getVar(VAR_TO_TEST));
+        graphics::drawTextLine(strings::join("Output: ", output));
+        graphics::flip();
+    }
+}

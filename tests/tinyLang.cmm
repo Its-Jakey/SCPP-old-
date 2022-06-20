@@ -1,0 +1,192 @@
+#include <strings>
+//#include <graphics>
+#include <input>
+
+#define MAX_TOKENS 64
+#define STACK_SIZE 64
+
+
+namespace lexer {
+    public var tokenTypes[MAX_TOKENS];
+    public var tokenValues[MAX_TOKENS];
+    public var tokens = 0;
+
+    var charIdx = 0;
+    var char = "";
+    var noInc = 0;
+    var code = "";
+
+    func addToken(type, value) {
+        tokenTypes[tokens] = type;
+        tokenValues[tokens] = value;
+        tokens++;
+    }
+
+    func next() {
+        if (noInc == 0) {
+            char = strings::charAt(code, charIdx);
+            charIdx++;
+        }
+        if (noInc == 1)
+            noInc = 0;
+    }
+
+    func in(str) {
+        return strings::contains(str, char);
+    }
+
+    func scan(values) {
+       var ret = "";
+
+       while (in(values) && char != "") {
+           ret = strings::join(ret, char);
+           next();
+       }
+       noInc = 1;
+       return ret;
+    }
+
+    func scanString(stringType) {
+        var ret = "";
+        next();
+
+        while (char != stringType) {
+            if (char == "") {
+                println(strings::join("Reached end of file while scanning for ", stringType));
+                exit();
+            }
+
+            ret = strings::join(ret, char);
+            //println(strings::join("str: ", ret));
+            next();
+        }
+        return ret;
+    }
+
+    func getToken() {
+        if (in("1234567890")) {
+            addToken("int", scan("1234567890"));
+            return;
+        }
+        if (in("abcdefghijklmnopqrstuvwxyz")) {
+            addToken("id", scan("abcdefghijklmnopqrstuvwxyz1234567890"));
+            return;
+        }
+        if (in("+-*/")) {
+            addToken("operator", char);
+            return;
+        }
+        if (in("=():;.,")) {
+            addToken(char, "");
+            return;
+        }
+        if (char == "'") {
+            addToken("string", scanString("'"));
+            return;
+        }
+    }
+
+    public func lex(code_) {
+        code = code_;
+        next();
+
+        while (char != "") {
+            getToken();
+            next();
+        }
+    }
+
+    public func printTokens() {
+        for (i from 0 to tokens) {
+            var type = tokenTypes[i];
+            var value = tokenValues[i];
+
+            var tmp = strings::join(type, " ");
+
+            println(strings::join(tmp, value));
+        }
+    }
+}
+
+namespace tinyLang {
+    var type = "";
+    var value = "";
+    var token_n = 0;
+
+    var stack[STACK_SIZE];
+    var sp = 0;
+
+    func advance() {
+        type = lexer::tokenTypes[token_n];
+        value = lexer::tokenValues[token_n];
+        token_n++;
+    }
+
+    func hasNextToken() {
+        return token_n < lexer::tokens;
+    }
+
+    func push(valueToPush) {
+        stack[sp] = valueToPush;
+        sp = sp + 1;
+    }
+
+    func pop() {
+        sp = sp - 1;
+        return stack[sp];
+    }
+
+    func executeToken() {
+        if (type == "id") {
+            return;
+        }
+        if (type == "int") {
+            push(value);
+            return;
+        }
+        if (type == "operator") {
+            var b = pop();
+            var a = pop();
+
+            if (value == "+") {
+                push(a + b);
+                return;
+            }
+            if (value == "-") {
+                push(a - b);
+                return;
+            }
+            if (value == "*") {
+                push(a * b);
+                return;
+            }
+            if (value == "/") {
+                push(a / b);
+                return;
+            }
+        }
+        if (type == ".") {
+            println(pop());
+            return;
+        }
+        if (type == ",") {
+            push(input::ask(""));
+            return;
+        }
+    }
+
+    public func execute(code) {
+        lexer::lex(code);
+
+        while (hasNextToken()) {
+            advance();
+            executeToken();
+        }
+    }
+
+    public func main() {
+        println("Executing!");
+        execute(input::ask("Code: "));
+        println("Done!");
+    }
+}

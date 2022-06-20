@@ -1,0 +1,27 @@
+namespace textBuffer {
+    var buf[128];
+    var line_n = 0;
+
+    public func draw(text) {
+        buf[line_n] = strings::join(buf[line_n], text);
+    }
+
+    public func drawln(line) {
+        draw(line);
+        line_n = line_n + 1;
+    }
+
+    public func render() {
+        for (i from 0 to (line_n + 1)) {
+            graphics::drawString(buf[i]);
+            graphics::newLine();
+        }
+        graphics::flip();
+    }
+
+    public func clear() {
+        for (i from 0 to 128)
+            buf[i] = "";
+        line_n = 0;
+    }
+}
