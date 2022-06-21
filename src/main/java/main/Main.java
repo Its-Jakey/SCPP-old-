@@ -17,7 +17,6 @@ public class Main {
         Option inputOpt = new Option("i", "input", true, "Input file to compile");
         inputOpt.setRequired(true);
         Option outputOpt = new Option("o", "output", true, "Output file");
-        outputOpt.setRequired(true);
         Option logOpt = new Option("l", "showLogs", false, "Show logs");
 
         options.addOption(inputOpt);
@@ -39,6 +38,9 @@ public class Main {
 
         String input = cmd.getOptionValue("i");
         String output = cmd.getOptionValue("o");
+
+        if (output == null)
+            output = input.substring(0, input.lastIndexOf('/') + 1) + input.substring(input.lastIndexOf('/') + 1, input.lastIndexOf('.')) + ".txt";
 
         Compiler.showLogs = cmd.hasOption("l");
         String asm = Compiler.compileTopLevel(new File(input));
