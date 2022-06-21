@@ -83,4 +83,4 @@ Notation:
 | `setCloudVar` | [cloudVarID], [var] | sets the cloud variable [cloudVarID] to the value of the variable [var]
 | `getCloudVar` | [cloudVarID] | sets the a register to the value of the cloud variable [cloudVarID]
 | `indexOfChar` | [string] [char] | sets the a register to the index of the first occurence of [char] in [string]
-| `goto` | [x], [y] | jumps to the position [x], [y]
+| `goto` | [x], [y] | moves to graphics pointer to [x], [y]
