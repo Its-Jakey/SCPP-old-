@@ -12,7 +12,7 @@ compilerFunction
 : '#' ID compilerFunctionValue*?;
 
 compilerFunctionValue
-: INT | ID | STRING | LIBRARY;
+: INT | HEX | BIN | ID | STRING | LIBRARY;
 
 bracketBlock
 : '{' statement*? '}' | nonBracketStatement ';';
@@ -76,7 +76,7 @@ methodCall
 
 
 value
-: STRING | (variable offset?) | INT | (methodCall offset?) | (sizeof='sizeof' '(' variable ')');
+: STRING | (variable offset?) | INT | HEX | BIN | (methodCall offset?) | (sizeof='sizeof' '(' variable ')');
 
 expression
 : expression OPERATOR expression
@@ -105,6 +105,8 @@ STRING: '"' (~'"'|'\\"')* '"';
 LIBRARY: '<' ([a-z] | [A-Z] | '_')+ ([a-z] | [A-Z] | '_' | [0-9])* '>';
 ID: ([a-z] | [A-Z] | '_')+ ([a-z] | [A-Z] | '_' | [0-9])*;
 INT: ('-'? [0-9]+ ('.' [0-9]+)?) | '.' [0-9]+;
+HEX: '0x' ([0-9] | [a-f] | [A-F])+;
+BIN: '0b' ('0' | '1')+;
 VARIABLE_MODIFIER: OPERATOR '=';
 VARIABLE_SINGLE_MODIFIER: '++' | '--';
 OPERATOR: '+' | '-' | '*' | '/' | '>>' | '<<' | '|' | '&' | '^' | '%' | '||' | '&&' | '>' | '<' | '==' | '!=' | '>=' | '<=';

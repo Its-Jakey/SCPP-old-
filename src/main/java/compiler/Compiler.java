@@ -154,6 +154,10 @@ public class Compiler extends CBaseListener {
             appendLine("ldi\n" + parseString(ctx.STRING().getText()));
         else if (ctx.INT() != null)
             appendLine("ldi\n" + ctx.INT().getText());
+        else if (ctx.HEX() != null)
+            appendLine("ldi\n" + Integer.parseInt(ctx.HEX().getText().substring(2), 16));
+        else if (ctx.BIN() != null)
+            appendLine("ldi\n" + Integer.parseInt(ctx.BIN().getText().substring(2), 2));
         else if (ctx.methodCall() != null) {
             Method method = evaluateMethodCall(ctx.methodCall());
 
@@ -407,9 +411,15 @@ public class Compiler extends CBaseListener {
                     throw new LanguageException("'define' directive takes 2 arguments, not " + ctx.compilerFunctionValue().size());
                 if (ctx.compilerFunctionValue(0).ID() == null)
                     throw new LanguageException("Name of constant must be an ID");
-                if (ctx.compilerFunctionValue(1).INT() == null)
-                    throw new LanguageException("Value of constant must be of type Integer");
-                constants.put(ctx.compilerFunctionValue(0).ID().getText(), ctx.compilerFunctionValue(1).INT().getText());
+
+                if (ctx.compilerFunctionValue(1).INT() != null)
+                    constants.put(ctx.compilerFunctionValue(0).ID().getText(), ctx.compilerFunctionValue(1).INT().getText());
+                else if (ctx.compilerFunctionValue(1).HEX() != null)
+                    constants.put(ctx.compilerFunctionValue(0).getText(), Integer.parseInt(ctx.compilerFunctionValue(1).HEX().getText().substring(2), 16) + "");
+                else if (ctx.compilerFunctionValue(1).BIN() != null)
+                    constants.put(ctx.compilerFunctionValue(0).getText(), Integer.parseInt(ctx.compilerFunctionValue(1).BIN().getText().substring(2), 2) + "");
+                else
+                    throw new LanguageException("Value of constant must be of type Integer, Hex, or Binary");
             }
         }
         log("Handled directive '" + ctx.ID().getText() + "'");
