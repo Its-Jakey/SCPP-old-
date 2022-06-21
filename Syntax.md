@@ -24,11 +24,11 @@ Values can be combined using the following operators:
 |    `/`   | Division
 |   `<<`   | Left shift
 |   `>>`   | Right shift
-|    `|`   | Bitwise OR
+|    `\|`   | Bitwise OR
 |    `&`   | Bitwise AND
 |    `^`   | Bitwise XOR
 |    `%`   | Modulo
-|   `||`   | Logical OR
+|   `\|\|`   | Logical OR
 |   `&&`   | Logical AND
 |    `>`   | Greater than
 |    `<`   | Less than
