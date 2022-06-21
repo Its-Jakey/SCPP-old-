@@ -290,6 +290,10 @@ public class Compiler extends CBaseListener {
                     case "-" -> "sub";
                     case "*" -> "mul";
                     case "/" -> "div";
+                    case ">>" -> "bitwiseRsf";
+                    case "<<" -> "bitwiseLsf";
+                    case "&" -> "bitwiseAnd";
+                    case "|" -> "bitwiseOr";
                     case "&&" -> "boolAnd";
                     case "||" -> "boolOr";
                     case "==" -> "boolEqual";
