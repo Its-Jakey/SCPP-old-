@@ -9,7 +9,7 @@ Make sure you read the [known bugs](Known%20bugs.txt) *BEFORE* you report a new 
 ## Usage
 Java must be installed in order to run the compiler
 #### Compiling
-1. Download the latest release of the compiler from [here](https://github.com/Its-Jakey/SCPP/releases) and extract the lib.zip file to the same directory as SCPP.jar
+1. Download the latest release of the compiler from [here](https://github.com/Its-Jakey/SCPP/releases)
 2. to compile your file run
 
     java -jar SCPP.jar [INPUT_FILE] [OUTPUT_FILE.txt]

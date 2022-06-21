@@ -10,8 +10,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.antlr.v4.runtime.tree.TerminalNode;
 import org.apache.commons.text.StringEscapeUtils;
 
-import java.io.File;
+import java.io.*;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -38,9 +39,7 @@ public class Compiler extends CBaseListener {
         evaluatePostfix(convertInfixToPostfix(expression));
     }
 
-    public static String compile(File file) throws Exception{
-        String code = Files.readString(file.toPath());
-
+    public static String compile(String code) throws Exception{
         CLexer lexer = new CLexer(CharStreams.fromString(code));
         CParser parser = new CParser(new CommonTokenStream(lexer));
 
@@ -368,24 +367,36 @@ public class Compiler extends CBaseListener {
                     throw new LanguageException("'include' directive takes 1 argument, not " + ctx.compilerFunctionValue().size());
                 if (ctx.compilerFunctionValue(0).LIBRARY() == null && ctx.compilerFunctionValue(0).STRING() == null)
                     throw new LanguageException("File to include must be a file or a internal library path");
+                boolean tmp0 = false;
+
+                boolean logBackup = showLogs && !tmp0;
+                showLogs = false;
 
                 if (ctx.compilerFunctionValue(0).LIBRARY() != null) {
                     String tmp = ctx.compilerFunctionValue(0).LIBRARY().getText().substring(1);
                     tmp = tmp.substring(0, tmp.length() - 1);
 
                     try {
-                        compile(new File("lib/" + tmp + ".sc"));
+
+                        try (InputStream in = getClass().getResourceAsStream("/" + tmp + ".sc"); BufferedReader reader = new BufferedReader(new InputStreamReader(in))) {
+                            StringBuilder contents = new StringBuilder();
+                            reader.lines().forEach(contents.append("\n")::append);
+                            compile(contents.substring(1));
+                        }
+                    } catch (NullPointerException | IOException e) {
+                        throw new LanguageException("Cannot find library <" + tmp + ">");
                     } catch (Exception e) {
                         throw new LanguageException("Cannot compile library <" + tmp + ">\n" + e.getMessage());
                     }
                 }
                 else {
                     try {
-                        compile(new File(parseString(ctx.compilerFunctionValue(0).STRING().getText())));
+                        compile(Files.readString(Path.of(parseString(ctx.compilerFunctionValue(0).STRING().getText()))));
                     } catch (Exception e) {
                         throw new LanguageException("Cannot compile library " + ctx.compilerFunctionValue(0).getText());
                     }
                 }
+                showLogs = logBackup;
             }
             case "define" -> {
                 if (ctx.compilerFunctionValue().size() != 2)
