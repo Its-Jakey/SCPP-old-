@@ -14,7 +14,7 @@ The VM has a secondary queue used to store graphic operations.
 
 The VM also has six registers: a,b and 1-4
 
-A console can be used to display messages.
+A console that can be used to display messages.
 
 ## Instructions
 
@@ -34,6 +34,10 @@ Notation:
 | `subWithVar` | [var]     | subtracts the value from the variable [var] to the a register
 | `mulWithVar` | [var]   | multiplies the value to the variable [var] to the a register
 | `divWithVar` | [var]   | divides the value from the variable [var] to the a register
+| `bitwiseLsfWithVar` | [var] | Leftshifts the A register by [var]
+| `bitwiseRsfWithVar` | [var] | Rightshifts the A regiser by [var]
+| `bitwiseAndWithVar` | [var] | Performs a bitwise and with the A regiser and [var]
+| `bitwiseOrWithVar` | [var] | Performs a bitwise or with the A regiser and [var]
 | `modWithVar` | [var]   | modulus the value from the variable [var] to the a register
 | `print`      |           | appends the value of the a register to the last line of the console
 | `println`    |           | appends the value of the a register to the last line of the console and starts a new line
