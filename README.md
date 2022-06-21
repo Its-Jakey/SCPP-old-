@@ -14,6 +14,4 @@ Java must be installed in order to run the compiler
 
     java -jar SCPP.jar [INPUT_FILE] [OUTPUT_FILE.txt]
 #### Running
-To run your file, goto [this](https://scratch.mit.edu/projects/697633215/editor/) Scratch project, then right-click the "program" list and hit the "import" button then select your file. You can then click the flag to run the program. 
-
-P.S. The /tests folder is just filled with random stuff I was playing around with, the only one that works is [this](tests/demo.cmm)
+To run your file, goto [this](https://scratch.mit.edu/projects/697633215/editor/) Scratch project, then right-click the "program" list and hit the "import" button then select your file. You can then click the flag to run the program.

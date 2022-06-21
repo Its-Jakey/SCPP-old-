@@ -3,8 +3,6 @@ package compiler;
 import antlr.CBaseListener;
 import antlr.CLexer;
 import antlr.CParser;
-import compiler.lib.*;
-import compiler.lib.Math;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -369,7 +367,7 @@ public class Compiler extends CBaseListener {
                     tmp = tmp.substring(0, tmp.length() - 1);
 
                     try {
-                        compile(new File("lib/" + tmp + ".cmm"));
+                        compile(new File("lib/" + tmp + ".sc"));
                     } catch (Exception e) {
                         throw new LanguageException("Cannot compile library <" + tmp + ">\n" + e.getMessage());
                     }

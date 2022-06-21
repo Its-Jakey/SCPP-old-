@@ -44,4 +44,21 @@ namespace math {
             return (0 - x);
         return x;
     }
+    func int(x) {
+        return round(x - 1, 0);
+    }
+    public func bitwiseAnd(a, b) {
+        var curA = a;
+        var curB = b;
+        var result = 0;
+        var n = 1;
+
+        while ((curA > 0) && (curB > 0)) {
+            if ((int(curA % 2) == 1) && (int(curB % 2) == 1))
+            result += n;
+            curA = int(a / 2);
+            curB = int(b / 2);
+            n = n * 2;
+        }
+    }
 }
