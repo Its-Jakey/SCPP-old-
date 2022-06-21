@@ -60,6 +60,8 @@ Notation:
 | `done` | | ends the program
 | `malloc` | [size] | allocates memory
 | `round` | [1] [2] | rounds the value of [1] to [2] decimal places
+| `floor` | [1] [2] | floors the value of [1] to [2] decimal places
+| `ceil` | [1] [2] | ceils the value of [1] to [2] decimal places
 | `cos` | [1] | sets the a register to the cosine of [1] (rad)
 | `sin` | [1] | sets the a register to the sine of [1] (rad)
 | `sqrt` | [1] | sets the a register to the square root of [1]
