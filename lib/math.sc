@@ -1,6 +1,6 @@
 namespace math {
-    public func round(x, dec) {
-        _asm_("round", x, dec);
+    public func round(x, places) {
+        _asm_("round", x, places);
         return _valueOfA_();
     }
     public func sin(x) {
