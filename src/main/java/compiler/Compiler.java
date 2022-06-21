@@ -22,7 +22,7 @@ public class Compiler extends CBaseListener {
     private static Method currentMethod;
     private static final HashMap<String, Namespace> namespaces = new HashMap<>();
     private static final HashMap<String, String> constants = new HashMap<>();
-    public static final boolean showLogs = false;
+    public static boolean showLogs = false;
     private static final SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy@HH:mm:ss");
     public static int line = 0;
     public static int col = 0;
@@ -61,6 +61,13 @@ public class Compiler extends CBaseListener {
     }
 
     public static String compileTopLevel(File file) throws Exception {
+        ret.delete(0, ret.length());
+        currentNamespace = null;
+        currentMethod = null;
+        namespaces.clear();
+        constants.clear();
+
+
         long start = System.currentTimeMillis();
         init();
         String code = Files.readString(file.toPath());
