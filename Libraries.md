@@ -1,9 +1,23 @@
-## Builtin Libraries
-#### Builtin Libraries can be included in your code with
+# Builtin Libraries
+
+Builtin Libraries can be included in your code with
+
     #include <[library]>
 
+## \_\_builtin__
+
+This is technically not a library as it is available to all programs.
+
+> **println(string);** Prints the string to the console
+> **\_asm_(...);** Executes the given assembly code
+> **\_valueOfA_(value);** Returns the value given
+> **malloc(size);** Allocates memory of size cells
+> **exit();** Exits the program
+
 ## cloud
-### The cloud library is used to interact with cloud variables
+
+The cloud library is used to interact with cloud variables
+
 > **setVar(varName, value);** Sets the cloud variable \(0 to 9) to the specified value
 >
 > **getVar(varName);** Returns the value of the cloud variable \(0 to 9);
@@ -13,7 +27,9 @@
 > **decode(string);** Returns the decoded form of the number string
 
 ## graphics
-### The graphics library is used to draw vector graphics on the screen, including text
+
+The graphics library is used to draw vector graphics on the screen, including text
+
 > **putPixel(x, y);** Sets the pixel on screen at x y to the current color
 >
 > **drawLine(x0, y0, x1, y1);** Draws a line on screen from x0 y0 to x1 y1
@@ -39,7 +55,9 @@
 > **goto(x, y);** Moves the text pointer to x y
 
 ## input
-### The input library allows you to access user input like the current mouse position
+
+The input library allows you to access user input like the current mouse position
+
 > **mouseX();** Returns the current mouse X coordinate
 >
 > **mouseY();** Returns the current mouse Y coordinate
@@ -51,44 +69,50 @@
 > **ask(message);** Prompts the user for input
 
 ## math
-### The math library allows for loose geometric calculations and others
+
+The math library allows for loose geometric calculations and others
+
 > **round(x, places);** Returns x rounded to the specified decimal places
-> 
+>
 > **sin(x (as radians));** Returns the sin of x as radians
-> 
+>
 > **cos(x (as radians));** Returns the cos of x as radians
-> 
+>
 > **sqrt(x);** Returns the square root of x
-> 
+>
 > **atan2(x, y);** Returns the arc tangent of x and y in radians
-> 
+>
 > **negate(x);** Returns -x
-> 
+>
 > **min(a, b);** Returns the smallest out of a and b
-> 
+>
 > **max(a, b);** Returns the largest out of a and b
-> 
+>
 > **inRange(x, a, b);** Returns 1 if x is larger than a and smaller than b, otherwise returns 0
-> 
+>
 > **abs(x);** Returns the absolute of x
 
 ## strings
-### The strings library helps with editing strings
+
+The strings library helps with editing strings
+
 > **charAt(string, idx);** Returns character at idx of string
-> 
+>
 > **sizeOf(string);** Returns the length of string
-> 
+>
 > **contains(string, x);** Returns 1 if string contains x, otherwise returns 0
-> 
+>
 > **join(a, b);** Returns a concatenated with b
-> 
+>
 > **substring(string, start, end);** Returns a substring of string from start to end
-> 
+>
 > **repeat(string, times);** Returns string repeated times
-> 
+>
 > **indexOfChar(string, char);** Returns the first index of char in string
 
 ## time
-### The time library allows for timing operations to the nearest millisecond
+
+The time library allows for timing operations to the nearest millisecond
+
 > **sleep(millis);** Waits until the current runtime length is millis longer
 > **getRuntimeMillis();** Returns the current length of the runtime in milliseconds
