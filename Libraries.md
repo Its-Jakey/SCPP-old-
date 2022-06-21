@@ -9,9 +9,13 @@ Builtin Libraries can be included in your code with
 This is technically not a library as it is available to all programs.
 
 > **println(string);** Prints the string to the console
+> 
 > **\_asm_(...);** Executes the given assembly code
-> **\_valueOfA_(value);** Returns the value given
+> 
+> **\_valueOfA_(value);** Returns the value of the A register, commonly used to get output from the _asm_() function
+> 
 > **malloc(size);** Allocates memory of size cells
+> 
 > **exit();** Exits the program
 
 ## cloud
