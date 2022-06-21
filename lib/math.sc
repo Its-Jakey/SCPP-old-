@@ -3,6 +3,14 @@ namespace math {
         _asm_("round", x, places);
         return _valueOfA_();
     }
+    public func floor(x, places) {
+        _asm_("floor", x, places);
+        return _valueOfA_();
+    }
+    public func ceil(x, places) {
+        _asm_("ceil", x, places);
+        return _valueOfA_();
+    }
     public func sin(x) {
         _asm_("sin", x);
         return _valueOfA_();

@@ -77,6 +77,10 @@ The input library allows you to access user input like the current mouse positio
 The math library allows for loose geometric calculations and others
 
 > **round(x, places);** Returns x rounded to the specified decimal places
+> 
+> **floor(x, places);** Returns x floored to the specified decimal places
+> 
+> **ceil(x, places);** Returns the ceiling of x to the specified decimal places
 >
 > **sin(x (as radians));** Returns the sin of x as radians
 >
