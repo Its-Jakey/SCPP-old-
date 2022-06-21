@@ -36,7 +36,7 @@ Values can be combined using the following operators:
 |   `!=`   | Not equal to
 |   `>=`   | Greater than or equal to
 |   `<=`   | Less than or equal to
-|    `!`   | Not
+<!--- |    `!`   | Not -->
 
 ## Defining Variables
 
