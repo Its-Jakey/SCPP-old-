@@ -12,7 +12,7 @@ This is technically not a library as it is available to all programs.
 > 
 > **\_asm_(...);** Executes the given assembly code
 > 
-> **\_valueOfA_(value);** Returns the value of the A register, commonly used to get output from the _asm_() function
+> **\_valueOfA_();** Returns the value of the A register, commonly used to get output from the _asm_() function
 > 
 > **malloc(size);** Allocates memory of size cells
 > 
