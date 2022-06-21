@@ -7,6 +7,8 @@ Numeric literals can be written in the following ways:
     1234
     12.24
     .1234
+    0x1234 //hexadecimal
+    0b0111 //binary
 
 String literals can be written in the following way:
 
