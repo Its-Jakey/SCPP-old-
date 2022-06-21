@@ -14,7 +14,6 @@ Strings {
 }
 
 Other {
-    '#define' and '#include' cannot be used after defining a namespace: namespace main {} #define MY_CONSTANT 123
     '#define' only works with integers: #define INTEGER_CONSTANT "Sup"
 }
 
