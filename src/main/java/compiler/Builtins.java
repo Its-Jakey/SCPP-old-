@@ -5,7 +5,7 @@ import java.util.List;
 
 import static compiler.Compiler.*;
 
-public class DefaultMethods {
+public class Builtins {
     public static void addAll(Namespace namespace) {
         namespace.addMethod("println", new println());
         namespace.addMethod("_asm_", new _asm_());
@@ -63,7 +63,7 @@ public class DefaultMethods {
 
     public static class malloc extends Method {
         public malloc() {
-            super(false, true, "malloc", List.of("words"), "std_");
+            super(true, true, "malloc", List.of("words"), "std_");
         }
 
         @Override
@@ -73,6 +73,7 @@ public class DefaultMethods {
             Compiler.evaluateExpression(args.get(0));
             Compiler.appendLine("storeAtVar\nmallocWords");
             Compiler.appendLine("malloc\nmallocWords");
+            Compiler.appendLine("storeAtVar\n" + super.getReturnVariableName());
         }
     }
 

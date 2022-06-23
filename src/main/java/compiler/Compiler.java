@@ -594,7 +594,7 @@ public class Compiler extends CBaseListener {
         if (currentNamespace != null)
             throw new LanguageException("Cannot create namespace when in namespace");
         currentNamespace = new Namespace(ctx.ID().getText());
-        DefaultMethods.addAll(currentNamespace);
+        Builtins.addAll(currentNamespace);
 
         log("Entered namespace '" + ctx.ID().getText() + "'");
         appendLine(":" + currentNamespace.getName());
