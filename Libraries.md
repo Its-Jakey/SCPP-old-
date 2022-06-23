@@ -14,7 +14,7 @@ This is technically not a library as it is available to all programs.
 > 
 > **\_valueOfA_();** Returns the value of the A register, commonly used to get output from the _asm_() function
 > 
-> **malloc(size);** Allocates memory of size cells
+> **malloc(size);** Allocates memory of size cells and returns the first address that it allocated
 > 
 > **exit();** Exits the program
 

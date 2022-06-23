@@ -197,6 +197,16 @@ public interface CListener extends ParseTreeListener {
 	 */
 	void exitVariableDefinition(CParser.VariableDefinitionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CParser#memoryAddressChange}.
+	 * @param ctx the parse tree
+	 */
+	void enterMemoryAddressChange(CParser.MemoryAddressChangeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CParser#memoryAddressChange}.
+	 * @param ctx the parse tree
+	 */
+	void exitMemoryAddressChange(CParser.MemoryAddressChangeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CParser#variableValueChange}.
 	 * @param ctx the parse tree
 	 */

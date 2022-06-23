@@ -36,7 +36,7 @@ public class Compiler extends CBaseListener {
     }
 
     public static void evaluateExpression(CParser.ExpressionContext expression) {
-        evaluatePostfix(convertInfixToPostfix(expression));
+        evaluatePostfix(convertInfixToPostfix(expression), expression.pointer != null);
     }
 
     public static String compile(String code) throws Exception{
@@ -145,11 +145,6 @@ public class Compiler extends CBaseListener {
     }
 
     static void evaluateValue(CParser.ValueContext ctx) {
-        if (ctx.offset() != null) {
-            evaluateExpression(ctx.offset().expression());
-            appendLine("storeAtVar\ntempOffset");
-        }
-
         if (ctx.STRING() != null)
             appendLine("ldi\n" + parseString(ctx.STRING().getText()));
         else if (ctx.INT() != null)
@@ -161,58 +156,27 @@ public class Compiler extends CBaseListener {
         else if (ctx.methodCall() != null) {
             Method method = evaluateMethodCall(ctx.methodCall());
 
-            if (ctx.offset() != null)
-                appendLine("loadAtVarWithOffset\n" + method.getReturnVariableName() + "\ntempOffset");
-            else
-                appendLine("loadAtVar\n" + method.getReturnVariableName());
-        } else if (ctx.sizeof == null){
-            CParser.VariableContext var = ctx.variable();
-            if (var.variable() != null) {
-                String namespaceName = var.ID().getText();
-                String varName = var.variable().ID().getText();
-
-                if (ctx.offset() != null)
-                    appendLine("loadAtVarWithOffset\n" + namespaceName + "_" + varName + "\ntempOffset");
-                else
-                    appendLine("loadAtVar\n" + namespaceName + "_" + varName);
-            } else if (currentMethod != null && (currentMethod.hasArgument(var.ID().getText()) || currentMethod.hasVariable(var.ID().getText()))) {
-                if (currentMethod.hasArgument(var.ID().getText())) {
-                    if (ctx.offset() != null)
-                        appendLine("loadAtVarWithOffset\n" + currentMethod.getArgumentName(var.ID().getText()) + "\ntempOffset");
-                    else
-                        appendLine("loadAtVar\n" + currentMethod.getArgumentName(var.ID().getText()));
-                } else if (ctx.offset() != null)
-                    appendLine("loadAtVarWithOffset\n" + currentNamespace.getName() + "_" + currentMethod.getName() + "_" + var.ID().getText() + "\ntempOffset");
-                else
-                    appendLine("loadAtVar\n" + currentNamespace.getName() + "_" + currentMethod.getName() + "_" + var.ID().getText());
-            } else {
-                if (currentNamespace.hasVariable(var.ID().getText())) {
-                    if (ctx.offset() != null)
-                        appendLine("loadAtVarWithOffset\n" + currentNamespace.getName() + "_" + var.ID().getText() + "\ntempOffset");
-                    else
-                        appendLine("loadAtVar\n" + currentNamespace.getName() + "_" + var.ID().getText());
-                } else {
-                    if (!constants.containsKey(var.ID().getText()))
-                        throw new LanguageException("Unknown variable '" + var.ID().getText() + "'");
-                    appendLine("ldi\n" + constants.get(var.ID().getText()));
-                }
-            }
+            appendLine("loadAtVar\n" + method.getReturnVariableName());
         } else {
             CParser.VariableContext var = ctx.variable();
             if (var.variable() != null) {
                 String namespaceName = var.ID().getText();
                 String varName = var.variable().ID().getText();
 
-                appendLine("arraySize\n" + namespaceName + "_" + varName);
+                appendLine("loadAtVar\n" + namespaceName + "_" + varName);
             } else if (currentMethod != null && (currentMethod.hasArgument(var.ID().getText()) || currentMethod.hasVariable(var.ID().getText()))) {
                 if (currentMethod.hasArgument(var.ID().getText()))
-                    appendLine("arraySize\n" + currentMethod.getArgumentName(var.ID().getText()));
+                    appendLine("loadAtVar\n" + currentMethod.getArgumentName(var.ID().getText()));
                 else
-                    appendLine("arraySize\n" + currentNamespace.getName() + "_" + currentMethod.getName() + "_" + var.ID().getText());
+                    appendLine("loadAtVar\n" + currentNamespace.getName() + "_" + currentMethod.getName() + "_" + var.ID().getText());
             } else {
-                if (!currentNamespace.hasVariable(var.ID().getText()))
-                    throw new LanguageException("Unknown variable '" + var.ID().getText() + "'");
-                appendLine("arraySize\n" + currentNamespace.getName() + "_" + var.ID().getText());
+                if (currentNamespace.hasVariable(var.ID().getText())) {
+                    appendLine("loadAtVar\n" + currentNamespace.getName() + "_" + var.ID().getText());
+                } else {
+                    if (!constants.containsKey(var.ID().getText()))
+                        throw new LanguageException("Unknown variable '" + var.ID().getText() + "'");
+                    appendLine("ldi\n" + constants.get(var.ID().getText()));
+                }
             }
         }
     }
@@ -255,7 +219,7 @@ public class Compiler extends CBaseListener {
     }
     private static int tmpCount = 0;
 
-    static void evaluatePostfix(List<ValueOrOperatorOrID> postfix) {
+    static void evaluatePostfix(List<ValueOrOperatorOrID> postfix, boolean isPointer) {
 
         Stack<ValueOrOperatorOrID> stack = new Stack<>();
         StringBuilder visualPostfix = new StringBuilder();
@@ -324,6 +288,10 @@ public class Compiler extends CBaseListener {
             evaluateValue(lastValue.value());
         else
             appendLine("loadAtVar\n" + lastValue.getId());
+        if (isPointer) {
+            appendLine("storeAtVar\npointer");
+            appendLine("getValueAtPointer\npointer");
+        }
 
         if (!stack.isEmpty())
             throw new RuntimeException("Postfix was not evaluated correctly, stack still has " + stack.size() + " items.");
@@ -642,22 +610,21 @@ public class Compiler extends CBaseListener {
             if (ctx.offset() != null) {
                 evaluateExpression(ctx.offset().expression());
                 appendLine("storeAtVar\narraySize");
-                appendLine("createArray\n" + var + "\narraySize");
+                appendLine("malloc\narraySize");
+                appendLine("storeAtVar\n" + var);
             } else {
                 List<CParser.ExpressionContext> items = evaluateArgumentArray(ctx.argumentArray());
 
                 appendLine("ldi\n" + items.size());
                 appendLine("storeAtVar\narraySize");
-                appendLine("createArray\n" + var + "\narraySize");
+                appendLine("malloc\narraySize");
+                appendLine("storeAtVar\n" + var);
+                appendLine("storeAtVar\narraySize");
 
-                int idx = 0;
                 for (CParser.ExpressionContext item : items) {
-                    appendLine("ldi\n" + idx);
-                    appendLine("storeAtVar\ntmpItemOffset");
                     evaluateExpression(item);
-                    appendLine("storeAtVarWithOffset\n" + var + "\ntmpItemOffset");
-
-                    idx++;
+                    appendLine("setValueAtPointer\narraySize");
+                    appendLine("inc\narraySize");
                 }
             }
 
@@ -738,10 +705,6 @@ public class Compiler extends CBaseListener {
     @Override
     public void exitVariableValueChange(CParser.VariableValueChangeContext ctx) {
         String varName;
-        if (ctx.offset() != null) {
-            evaluateExpression(ctx.offset().expression());
-            appendLine("storeAtVar\ntempOffset");
-        }
 
         if (ctx.variable().variable() != null) {
             String namespace = ctx.variable().ID().getText();
@@ -763,64 +726,32 @@ public class Compiler extends CBaseListener {
 
         if (ctx.VARIABLE_SINGLE_MODIFIER() != null) {
             if (ctx.VARIABLE_SINGLE_MODIFIER().getText().equals("++")) {
-                if (ctx.offset() != null) {
-                    appendLine("loadAtVarWithOffset\n" + varName + "\ntempOffset");
-                    appendLine("storeAtVar\ntempOffsetVar");
-                    appendLine("ldi\n1\naddWithVar\ntempOffsetVar");
-                    appendLine("storeAtVarWithOffset\n" + varName + "\ntempOffset");
-                } else {
-                    appendLine("ldi\n1\naddWithVar\n" + varName);
-                    appendLine("storeAtVar\n" + varName);
-                }
+                appendLine("ldi\n1\naddWithVar\n" + varName);
             } else {
-                if (ctx.offset() != null) {
-                    appendLine("loadAtVarWithOffset\n" + varName + "\ntempOffset");
-                    appendLine("storeAtVar\ntempOffsetVar");
-                    appendLine("ldi\n1\nsubWithVar\ntempOffsetVar");
-                    appendLine("storeAtVarWithOffset\n" + varName + "\ntempOffset");
-                } else {
-                    appendLine("ldi\n1\nsubWithVar\n" + varName);
-                    appendLine("storeAtVar\n" + varName);
-                }
+                appendLine("ldi\n1\nsubWithVar\n" + varName);
             }
+            if (ctx.pointer == null)
+                appendLine("storeAtVar\n" + varName);
+            else
+                appendLine("setValueAtPointer\n" + varName);
             return;
         } //variable modifier == null
 
         evaluateExpression(ctx.expression());
-        if (ctx.offset() != null) {
-            appendLine("storeAtVar\ntmpExpression");
-            evaluateExpression(ctx.offset().expression());
-            appendLine("storeAtVar\ntempOffset");
-            appendLine("loadAtVar\ntmpExpression");
-        }
         if (ctx.VARIABLE_MODIFIER() != null) {
-            if (ctx.offset() != null) {
-                appendLine("loadAtVarWithOffset\n" + varName + "\ntempOffset");
-                appendLine("storeAtVar\ntempOffsetVar");
-
-                switch (ctx.VARIABLE_MODIFIER().getText()) {
-                    case "+=" -> appendLine("addWithVar\ntempOffsetVar");
-                    case "-=" -> appendLine("subWithVar\ntempOffsetVar");
-                    case "*=" -> appendLine("mulWithVar\ntempOffsetVar");
-                    case "/=" -> appendLine("divWithVar\ntempOffsetVar");
-                    case "%=" -> appendLine("modWithVar\ntempOffsetVar");
-                    default -> throw new LanguageException("'=' expected");
-                }
-            } else {
-                switch (ctx.VARIABLE_MODIFIER().getText()) {
-                    case "+=" -> appendLine("addWithVar\n" + varName);
-                    case "-=" -> appendLine("subWithVar\n" + varName);
-                    case "*=" -> appendLine("mulWithVar\n" + varName);
-                    case "/=" -> appendLine("divWithVar\n" + varName);
-                    case "%=" -> appendLine("modWithVar\n" + varName);
-                    default -> throw new LanguageException("'=' expected");
-                }
+            switch (ctx.VARIABLE_MODIFIER().getText()) {
+                case "+=" -> appendLine("addWithVar\n" + varName);
+                case "-=" -> appendLine("subWithVar\n" + varName);
+                case "*=" -> appendLine("mulWithVar\n" + varName);
+                case "/=" -> appendLine("divWithVar\n" + varName);
+                case "%=" -> appendLine("modWithVar\n" + varName);
+                default -> throw new LanguageException("'=' expected");
             }
         }
-        if (ctx.offset() != null)
-            appendLine("storeAtVarWithOffset\n" + varName + "\ntempOffset");
-        else
+        if (ctx.pointer == null)
             appendLine("storeAtVar\n" + varName);
+        else
+            appendLine("setValueAtPointer\n" + varName);
     }
 
     @Override
@@ -836,6 +767,15 @@ public class Compiler extends CBaseListener {
         //System.out.println("calling method '" + ctx.variable().getText() + "'");
         if (!(ctx.parent instanceof CParser.ValueContext))
             evaluateMethodCall(ctx);
+    }
+
+    @Override
+    public void exitMemoryAddressChange(CParser.MemoryAddressChangeContext ctx) {
+        evaluateExpression(ctx.expression(0));
+        appendLine("storeAtVar\nmemoryAddress");
+
+        evaluateExpression(ctx.expression(1));
+        appendLine("setValueAtPointer\nmemoryAddress");
     }
 
     @Override

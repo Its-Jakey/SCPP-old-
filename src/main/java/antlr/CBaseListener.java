@@ -243,6 +243,18 @@ public class CBaseListener implements CListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMemoryAddressChange(CParser.MemoryAddressChangeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMemoryAddressChange(CParser.MemoryAddressChangeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterVariableValueChange(CParser.VariableValueChangeContext ctx) { }
 	/**
 	 * {@inheritDoc}

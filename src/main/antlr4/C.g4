@@ -50,11 +50,12 @@ methodDefinition
 : pub='public'? 'func' ID L_PAREN methodArgumentArray? R_PAREN bracketBlock;
 
 nonBracketStatement
-: variableArrayDefinition
-| variableDefinition
+: variableDefinition
+| variableArrayDefinition
 | variableValueChange
 | methodCall
-| returnStatement;
+| returnStatement
+| memoryAddressChange;
 
 namespaceDefinition
 : 'namespace' ID bracketBlock;
@@ -68,18 +69,22 @@ variableArrayDefinition
 variableDefinition
 : pub='public'? 'var' ID '=' expression;
 
+memoryAddressChange
+: '*' expression '=' expression;
+
 variableValueChange
-: variable offset? ((VARIABLE_MODIFIER | '=') expression | VARIABLE_SINGLE_MODIFIER);
+: pointer='*'? variable ((VARIABLE_MODIFIER | '=') expression | VARIABLE_SINGLE_MODIFIER);
 
 methodCall
 : variable L_PAREN argumentArray? R_PAREN;
 
 
 value
-: STRING | (variable offset?) | INT | HEX | BIN | (methodCall offset?) | (sizeof='sizeof' '(' variable ')');
+: STRING | variable | INT | HEX | BIN | methodCall;
 
 expression
-: expression OPERATOR expression
+: pointer='*' expression
+| expression OPERATOR expression
 | L_PAREN expression R_PAREN
 | value;
 

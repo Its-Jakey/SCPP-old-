@@ -1,11 +1,5 @@
 Known bugs (Before ':' is the description, after is how to produce it)
 
-Arrays {
-    Arrays cannot be passed as arguments to functions:                  var array[10]; myFunc(array);
-    Functions cannot return arrays:                                     var array[10]; return array;
-    '+=', '-=', '/=', '-=', '++', '--' does not work for array items:   var array[10]; array[0]++;
-}
-
 Strings {
     Strings cannot start with ':':                                      var str = ":hi";
     Strings cannot contain '"':                                         var str = "sup \"world\"";
