@@ -91,3 +91,5 @@ Notation:
 | `getCloudVar` | [cloudVarID] | sets the a register to the value of the cloud variable [cloudVarID]                                                                                    
 | `indexOfChar` | [string] [char] | sets the a register to the index of the first occurence of [char] in [string]                                                                          
 | `goto` | [x], [y] | moves to graphics pointer to [x], [y]                                                                                                                  
+| `getValueAtPointer` | [var] | sets the A register to the value at memory address [var]
+| `setValueAtPointer` | [var] | sets the memory address at [var] to the A register
