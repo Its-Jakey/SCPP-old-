@@ -737,13 +737,13 @@ public class Compiler extends CBaseListener {
             return;
         } //variable modifier == null
 
-        evaluateExpression(ctx.expression());
         if (ctx.VARIABLE_MODIFIER() != null) {
             String tmp = varName.substring(0);
 
             appendLine("getValueAtPointer\n" + varName);
             appendLine("storeAtVar\npointedVar");
             varName = "pointedVar";
+            evaluateExpression(ctx.expression());
 
 
             switch (ctx.VARIABLE_MODIFIER().getText()) {
@@ -755,7 +755,8 @@ public class Compiler extends CBaseListener {
                 default -> throw new LanguageException("'=' expected");
             }
             varName = tmp;
-        }
+        } else
+            evaluateExpression(ctx.expression());
         if (ctx.pointer == null)
             appendLine("storeAtVar\n" + varName);
         else
