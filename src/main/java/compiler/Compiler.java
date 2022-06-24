@@ -739,6 +739,13 @@ public class Compiler extends CBaseListener {
 
         evaluateExpression(ctx.expression());
         if (ctx.VARIABLE_MODIFIER() != null) {
+            String tmp = varName.substring(0);
+
+            appendLine("getValueAtPointer\n" + varName);
+            appendLine("storeAtVar\npointedVar");
+            varName = "pointedVar";
+
+
             switch (ctx.VARIABLE_MODIFIER().getText()) {
                 case "+=" -> appendLine("addWithVar\n" + varName);
                 case "-=" -> appendLine("subWithVar\n" + varName);
@@ -747,6 +754,7 @@ public class Compiler extends CBaseListener {
                 case "%=" -> appendLine("modWithVar\n" + varName);
                 default -> throw new LanguageException("'=' expected");
             }
+            varName = tmp;
         }
         if (ctx.pointer == null)
             appendLine("storeAtVar\n" + varName);
