@@ -45,10 +45,10 @@ Values can be combined using the following operators:
 Pointers prefix a variable name or an expression. When a pointer prefixes a variable name when changing its value, instead of setting that variable to the value it will set the memory location at the value of the variable to the value like
 
     var x = 12; //Sets x to 12
-    var *x = 14; //Sets memory address 12 to 14
+    var ~x = 14; //Sets memory address 12 to 14
     
-    var y = *x; //Sets y to 14
-    var *y = 21; //Sets memory address 14 to 21
+    var y = ~x; //Sets y to 14
+    var ~y = 21; //Sets memory address 14 to 21
 
 ## Defining Variables
 
@@ -56,10 +56,6 @@ There are 2 types of variables, global and local. A variable is global when it i
 Variables can be defined by using the 'var' keyword like
 
     var x = value
-
-an empty array like, this will set x to the address that is the start of the array
-
-    var x[20];
 
 or an array with values like, this also will set x to the address that is the start of the array
 
@@ -71,7 +67,7 @@ Variables can be later reassigned to using the '=' operator like
 
 Memory addresses can also be set like
 
-    *12 = 45;  //Sets memory address 12 to 45
+    ~12 = 45;  //Sets memory address 12 to 45
 
 You can also use modifiers to modify the value of a variable like
 

@@ -8,7 +8,9 @@ Builtin Libraries can be included in your code with
 
 This is technically not a library as it is available to all programs.
 
-> **println(string);** Prints the string to the console
+> **println(string1, string2, string3..);** Prints the input strings to the console separated by a space, then starts a new line
+> 
+> **print(string1, string2, string3..);** Prints the input strings to the console separated by a space
 > 
 > **\_asm_(...);** Executes the given assembly code
 > 
@@ -17,6 +19,8 @@ This is technically not a library as it is available to all programs.
 > **malloc(size);** Allocates memory of size cells and returns the first address that it allocated
 > 
 > **exit();** Exits the program
+> 
+> **concat(args...)** Returns all the arguments combined into a string
 
 ## cloud
 

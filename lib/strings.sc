@@ -12,7 +12,7 @@ namespace strings {
         return _valueOfA_();
     }
     public func join(a, b) {
-        _asm_("join", a, b);
+        _asm_("loadAtVar", a, "join", b);
         return _valueOfA_();
     }
     public func substring(string, start, end) {

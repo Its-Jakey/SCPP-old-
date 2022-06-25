@@ -25,26 +25,26 @@ Notation:
     [x]: variable
 
 | instruction  | arguments | description
-| ------------ | --------- |--------------------------------------------------------------------------------------------------------------------------------------------------------
-|    `ldi`     | value     | sets the a register to the value                                                                                                                       
-| `loadAtVar`  | [var]     | sets the a register to the value of the variable [var]                                                                                                 
-| `storeAtVar` | [var]     | sets the variable [var] to the value of the a register                                                                                                 
-| `jts`        | value     | pushes the current instruction pointer to the stack and jumps to the value                                                                             
-| `ret`        |           | pops the top stack frame and jumps to the value                                                                                                        
-| `addWithVar` | [var]     | adds the value to the variable [var] to the a register                                                                                                 
-| `subWithVar` | [var]     | subtracts the value from the variable [var] to the a register                                                                                          
-| `mulWithVar` | [var]   | multiplies the value to the variable [var] to the a register                                                                                           
-| `divWithVar` | [var]   | divides the value from the variable [var] to the a register                                                                                            
+| ------------ | -------- |--------------------------------------------------------------------------------------------------------------------------------------------------------
+|    `ldi`     | value    | sets the a register to the value                                                                                                                       
+| `loadAtVar`  | [var]    | sets the a register to the value of the variable [var]                                                                                                 
+| `storeAtVar` | [var]    | sets the variable [var] to the value of the a register                                                                                                 
+| `jts`        | value    | pushes the current instruction pointer to the stack and jumps to the value                                                                             
+| `ret`        |          | pops the top stack frame and jumps to the value                                                                                                        
+| `addWithVar` | [var]    | adds the value to the variable [var] to the a register                                                                                                 
+| `subWithVar` | [var]    | subtracts the value from the variable [var] to the a register                                                                                          
+| `mulWithVar` | [var]  | multiplies the value to the variable [var] to the a register                                                                                           
+| `divWithVar` | [var]  | divides the value from the variable [var] to the a register                                                                                            
 | `bitwiseLsfWithVar` | [var] | Leftshifts the A register by [var]                                                                                                                     
 | `bitwiseRsfWithVar` | [var] | Rightshifts the A regiser by [var]                                                                                                                     
 | `bitwiseAndWithVar` | [var] | Performs a bitwise and with the A regiser and [var]                                                                                                    
 | `bitwiseOrWithVar` | [var] | Performs a bitwise or with the A regiser and [var]                                                                                                     
-| `modWithVar` | [var]   | modulus the value from the variable [var] to the a register                                                                                            
-| `print`      |           | appends the value of the a register to the last line of the console                                                                                    
-| `println`    |           | appends the value of the a register to the last line of the console and starts a new line                                                              
-| `jmp`        | value     | jumps to the value                                                                                                                                     
-| `jt`         | value     | jumps to the value if the a register is greater than 0                                                                                                 
-| `jf`         | value     | jumps to the value if the a register is less than 1                                                                                                    
+| `modWithVar` | [var]  | modulus the value from the variable [var] to the a register                                                                                            
+| `print`      |          | appends the value of the a register to the last line of the console                                                                                    
+| `println`    |          | appends the value of the a register to the last line of the console and starts a new line                                                              
+| `jmp`        | value    | jumps to the value                                                                                                                                     
+| `jt`         | value    | jumps to the value if the a register is greater than 0                                                                                                 
+| `jf`         | value    | jumps to the value if the a register is less than 1                                                                                                    
 | `boolAndWithVar` | [var] | ands the value to the variable [var] to the a register                                                                                                 
 | `boolOrWithVar`  | [var] | ors the value to the variable [var] to the a register                                                                                                  
 | `boolEqualsWithVar` | [var] | equals the value to the variable [var] to the a register                                                                                               
@@ -79,7 +79,7 @@ Notation:
 | `createColor` | [r], [g], [b] | creates a color with the given RGB values and sets the a register to the address of the color                                                          
 | `charAt` | [var], [index] | sets the a register to the character at index [index] in the string stored in [var]                                                                    
 | `contains` | [text1], [text2] | sets the a register to 1 if [text2] is contained in [text1], 0 otherwise                                                                               
-| `join` | [text1], [text2] | sets the a register to [text1] + [text2]                                                                                                               
+| `join` | [text] | sets the a register to (a register) + text                                                                                                              
 | `setStrokeWidth` | [width] | sets the stroke width to [width]                                                                                                                       
 | `inc` | [var] | increments the variable [var] by 1                                                                                                                     
 | `dec` | [var] | decrements the variable [var] by 1                                                                                                                     

@@ -64,16 +64,16 @@ returnStatement
 : 'return' expression?;
 
 variableArrayDefinition
-: pub='public'? 'var' ID (offset | '=' '{' argumentArray '}');
+: pub='public'? 'var' ID ('=' '{' argumentArray '}')?;
 
 variableDefinition
-: pub='public'? 'var' ID '=' expression;
+: pub='public'? 'var' ID '=' expression?;
 
 memoryAddressChange
-: '*' expression '=' expression;
+: '~' expression '=' expression;
 
 variableValueChange
-: pointer='*'? variable ((VARIABLE_MODIFIER | '=') expression | VARIABLE_SINGLE_MODIFIER);
+: pointer='~'? variable ((VARIABLE_MODIFIER | '=') expression | VARIABLE_SINGLE_MODIFIER);
 
 methodCall
 : variable L_PAREN argumentArray? R_PAREN;
@@ -83,10 +83,10 @@ value
 : STRING | variable | INT | HEX | BIN | methodCall;
 
 expression
-: pointer='*' expression
-| expression OPERATOR expression
+: expression OPERATOR expression
 | L_PAREN expression R_PAREN
-| value;
+| value
+| pointer='~' expression;
 
 condition
 : L_PAREN expression R_PAREN;

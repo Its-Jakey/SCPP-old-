@@ -41,7 +41,7 @@ public class CLexer extends Lexer {
 	private static final String[] _LITERAL_NAMES = {
 		null, "';'", "'#'", "'{'", "'}'", "'if'", "'while'", "'for'", "'from'", 
 		"'to'", "'by'", "'switch'", "'case'", "'->'", "'defualt'", "'public'", 
-		"'func'", "'namespace'", "'return'", "'var'", "'='", "'*'", "','", "'::'", 
+		"'func'", "'namespace'", "'return'", "'var'", "'='", "'~'", "','", "'::'", 
 		"'['", "']'", null, null, null, null, null, null, null, null, null, "'!'", 
 		null, null, null, "'('", "')'"
 	};
@@ -171,8 +171,8 @@ public class CLexer extends Lexer {
 		"\7t\2\2\u00a1\u00a2\7g\2\2\u00a2\u00a3\7v\2\2\u00a3\u00a4\7w\2\2\u00a4"+
 		"\u00a5\7t\2\2\u00a5\u00a6\7p\2\2\u00a6&\3\2\2\2\u00a7\u00a8\7x\2\2\u00a8"+
 		"\u00a9\7c\2\2\u00a9\u00aa\7t\2\2\u00aa(\3\2\2\2\u00ab\u00ac\7?\2\2\u00ac"+
-		"*\3\2\2\2\u00ad\u00ae\7,\2\2\u00ae,\3\2\2\2\u00af\u00b0\7.\2\2\u00b0."+
-		"\3\2\2\2\u00b1\u00b2\7<\2\2\u00b2\u00b3\7<\2\2\u00b3\60\3\2\2\2\u00b4"+
+		"*\3\2\2\2\u00ad\u00ae\7\u0080\2\2\u00ae,\3\2\2\2\u00af\u00b0\7.\2\2\u00b0"+
+		".\3\2\2\2\u00b1\u00b2\7<\2\2\u00b2\u00b3\7<\2\2\u00b3\60\3\2\2\2\u00b4"+
 		"\u00b5\7]\2\2\u00b5\62\3\2\2\2\u00b6\u00b7\7_\2\2\u00b7\64\3\2\2\2\u00b8"+
 		"\u00be\7$\2\2\u00b9\u00bd\n\2\2\2\u00ba\u00bb\7^\2\2\u00bb\u00bd\7$\2"+
 		"\2\u00bc\u00b9\3\2\2\2\u00bc\u00ba\3\2\2\2\u00bd\u00c0\3\2\2\2\u00be\u00bc"+

@@ -1,5 +1,7 @@
 # SCPP
 
+## The language is currently a horrible buggy mess because I am implementing some new stuff, don't even try to use it at this time.
+
 ### This programming language is **VERY** unstable! If you find a bug, please report it in the 'issues' tab.
 #### You can find the current list of known bugs [here](Known%20bugs.txt), documentation on the syntax [here](Syntax.md), documentation on the builtin libraries [here](Libraries.md), and the VM instruction set [here](SLVM%20Bytecode.md)
 

@@ -196,7 +196,7 @@ public class Compiler extends CBaseListener {
             namespaces.get(namespaceName).getMethod(methodName).call(arguments);
             return namespaces.get(namespaceName).getMethod(methodName);
         }
-        if (currentMethod.getName().equals(ctx.variable().ID().getText())) {
+        if (currentMethod != null && currentMethod.getName().equals(ctx.variable().ID().getText())) {
             currentMethod.call(arguments);
             return currentMethod;
         }
@@ -346,6 +346,8 @@ public class Compiler extends CBaseListener {
                 boolean tmp0 = false;
 
                 boolean logBackup = showLogs && !tmp0;
+                int lineBackup = line + 0;
+                int colBackup = col + 0;
                 showLogs = false;
 
                 if (ctx.compilerFunctionValue(0).LIBRARY() != null) {
@@ -373,6 +375,8 @@ public class Compiler extends CBaseListener {
                     }
                 }
                 showLogs = logBackup;
+                line = lineBackup;
+                col = colBackup;
             }
             case "define" -> {
                 if (ctx.compilerFunctionValue().size() != 2)
@@ -602,62 +606,36 @@ public class Compiler extends CBaseListener {
         if (currentMethod != null && ctx.pub != null)
             throw new LanguageException(ctx.pub.getText() + " modifier cannot be used inside method declaration");
 
+        String var;
+
         if (currentMethod != null) {
             if (currentMethod.hasVariable(name) || currentMethod.hasArgument(name))
                 throw new LanguageException("Duplicate variable '" + name + "'");
 
-            String var = currentNamespace.getName() + "_" + currentMethod.getName() + "_" + name;
-            if (ctx.offset() != null) {
-                evaluateExpression(ctx.offset().expression());
-                appendLine("storeAtVar\narraySize");
-                appendLine("malloc\narraySize");
-                appendLine("storeAtVar\n" + var);
-            } else {
-                List<CParser.ExpressionContext> items = evaluateArgumentArray(ctx.argumentArray());
-
-                appendLine("ldi\n" + items.size());
-                appendLine("storeAtVar\narraySize");
-                appendLine("malloc\narraySize");
-                appendLine("storeAtVar\n" + var);
-                appendLine("storeAtVar\narraySize");
-
-                for (CParser.ExpressionContext item : items) {
-                    evaluateExpression(item);
-                    appendLine("setValueAtPointer\narraySize");
-                    appendLine("inc\narraySize");
-                }
-            }
-
+            var = currentNamespace.getName() + "_" + currentMethod.getName() + "_" + name;
             currentMethod.addVariable(name, var);
+
         } else {
             if (currentNamespace.hasVariable(name))
                 throw new LanguageException("Duplicate variable '" + name + "'");
 
-            String var = currentNamespace.getName() + "_" + name;
-
-            if (ctx.offset() != null) {
-                evaluateExpression(ctx.offset().expression());
-                appendLine("storeAtVar\narraySize");
-                appendLine("createArray\n" + var + "\narraySize");
-            } else {
-                List<CParser.ExpressionContext> items = evaluateArgumentArray(ctx.argumentArray());
-
-                appendLine("ldi\n" + items.size());
-                appendLine("storeAtVar\narraySize");
-                appendLine("createArray\n" + var + "\narraySize");
-
-                int idx = 0;
-                for (CParser.ExpressionContext item : items) {
-                    appendLine("ldi\n" + idx);
-                    appendLine("storeAtVar\ntmpItemOffset");
-                    evaluateExpression(item);
-                    appendLine("storeAtVarWithOffset\n" + var + "\ntmpItemOffset");
-
-                    idx++;
-                }
-            }
-
+            var = currentNamespace.getName() + "_" + name;
             currentNamespace.addVariable(name, new Variable(var, ctx.pub != null));
+        }
+        if (ctx.argumentArray() != null) {
+            List<CParser.ExpressionContext> items = evaluateArgumentArray(ctx.argumentArray());
+
+            appendLine("ldi\n" + items.size());
+            appendLine("storeAtVar\narraySize");
+            appendLine("malloc\narraySize");
+            appendLine("storeAtVar\n" + var);
+            appendLine("storeAtVar\narraySize");
+
+            for (CParser.ExpressionContext item : items) {
+                evaluateExpression(item);
+                appendLine("setValueAtPointer\narraySize");
+                appendLine("inc\narraySize");
+            }
         }
         log("Defined array '" + name + "'");
     }
@@ -770,12 +748,13 @@ public class Compiler extends CBaseListener {
 
     @Override
     public void exitMethodCall(CParser.MethodCallContext ctx) {
-        if (currentMethod == null)
-            throw new LanguageException("Cannot call method from outside of method.");
 
         //System.out.println("calling method '" + ctx.variable().getText() + "'");
-        if (!(ctx.parent instanceof CParser.ValueContext))
+        if (!(ctx.parent instanceof CParser.ValueContext)) {
+            if (currentMethod == null)
+                throw new LanguageException("Cannot call method from outside of method.");
             evaluateMethodCall(ctx);
+        }
     }
 
     @Override
